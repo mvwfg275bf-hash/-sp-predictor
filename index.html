@@ -2,229 +2,214 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#07111f">
-
-<title>SP 下一次预测器</title>
+<title>SP 拉长补短预测器</title>
 
 <style>
 *{
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color:transparent
 }
 
 body{
     margin:0;
     background:#07111f;
     color:#eef4ff;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "Segoe UI",
-        sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,
+    "SF Pro Display","Segoe UI",sans-serif
 }
 
-.container{
+.wrap{
     max-width:720px;
     margin:auto;
-    padding:18px 14px 45px;
+    padding:18px 14px 45px
 }
 
-.header{
-    padding:8px 2px 18px;
+.head{
+    padding:7px 2px 18px
 }
 
 h1{
     margin:0;
-    font-size:29px;
+    font-size:28px
 }
 
-.subtitle{
-    color:#8fa2bc;
+.sub,
+.muted{
+    color:#91a3bc;
     font-size:13px;
-    margin-top:6px;
+    line-height:1.55
 }
 
 .card{
     background:#111d30;
     border:1px solid #2a3b57;
     border-radius:20px;
-    padding:17px;
-    margin:12px 0;
+    padding:16px;
+    margin:12px 0
 }
 
 label{
     display:block;
     font-weight:800;
-    margin:12px 0 7px;
+    margin:12px 0 7px
 }
 
 input,
 textarea{
     width:100%;
     background:#091423;
-    color:white;
+    color:#fff;
     border:1px solid #3b4f6d;
     border-radius:14px;
-    padding:14px;
+    padding:13px;
     font-size:17px;
-    outline:none;
+    outline:none
 }
 
 textarea{
-    min-height:145px;
+    min-height:150px;
     resize:vertical;
-    line-height:1.5;
-}
-
-button{
-    width:100%;
-    min-height:54px;
-    margin-top:12px;
-    border:0;
-    border-radius:15px;
-    background:#38bdf8;
-    color:#052438;
-    font-size:17px;
-    font-weight:900;
-}
-
-button:active{
-    transform:scale(.98);
-}
-
-.secondary{
-    background:#293b58;
-    color:white;
+    line-height:1.5
 }
 
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:10px;
+    gap:10px
+}
+
+button{
+    width:100%;
+    min-height:52px;
+    margin-top:11px;
+    border:0;
+    border-radius:14px;
+    background:#38bdf8;
+    color:#052438;
+    font-size:16px;
+    font-weight:900
+}
+
+button:active{
+    transform:scale(.98)
+}
+
+.secondary{
+    background:#293b58;
+    color:#fff
 }
 
 .hero{
-    background:
-        linear-gradient(135deg,#132b45,#101c30);
-    border-color:#31587f;
+    background:linear-gradient(
+        135deg,
+        #132b45,
+        #101c30
+    );
+    border-color:#31587f
 }
 
 .big{
     font-size:36px;
     font-weight:950;
-    margin-top:5px;
-}
-
-.muted{
-    color:#91a3bc;
-    font-size:13px;
-    line-height:1.55;
-}
-
-.status{
-    min-height:20px;
-    margin-top:10px;
-}
-
-.good{
-    color:#4ade80;
-}
-
-.warn{
-    color:#fbbf24;
+    margin-top:5px
 }
 
 .stats{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:9px;
+    gap:9px
 }
 
 .stat{
     background:#091423;
     border-radius:14px;
-    padding:13px;
+    padding:12px
 }
 
-.stat-title{
-    color:#8fa2bc;
+.st{
     font-size:12px;
+    color:#8fa2bc
 }
 
-.stat-value{
-    font-size:23px;
+.sv{
+    font-size:21px;
     font-weight:900;
-    margin-top:3px;
+    margin-top:3px
 }
 
 .range{
     background:#091423;
-    border-radius:15px;
-    padding:14px;
-    margin-top:9px;
-}
-
-.range-number{
-    font-size:22px;
-    font-weight:900;
+    border-radius:14px;
+    padding:13px;
+    margin-top:8px
 }
 
 .bar{
-    height:13px;
+    height:11px;
     background:#293b58;
     border-radius:99px;
     overflow:hidden;
-    margin-top:10px;
+    margin-top:8px
 }
 
-.bar-fill{
+.fill{
     height:100%;
-    background:#38bdf8;
+    background:#38bdf8
+}
+
+.good{
+    color:#4ade80
+}
+
+.warn{
+    color:#fbbf24
+}
+
+.bad{
+    color:#fb7185
+}
+
+.status{
+    min-height:20px;
+    margin-top:9px
+}
+
+.note{
+    background:#17263a;
+    padding:12px;
+    border-radius:13px;
+    color:#b4c0d2;
+    font-size:12px;
+    line-height:1.6
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    font-size:14px;
+    font-size:13px
 }
 
-th,
-td{
-    padding:9px 5px;
+td,
+th{
+    padding:8px 4px;
     border-bottom:1px solid #293b58;
-    text-align:left;
+    text-align:left
 }
 
 th{
-    color:#8fa2bc;
-}
-
-.hidden{
-    display:none;
-}
-
-.warning{
-    background:#17263a;
-    padding:12px;
-    border-radius:13px;
-    color:#aebbd0;
-    font-size:12px;
-    line-height:1.5;
+    color:#8fa2bc
 }
 
 @media(max-width:430px){
 
     .grid{
-        grid-template-columns:1fr;
+        grid-template-columns:1fr
     }
 
     .stats{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:1fr 1fr
     }
 
 }
@@ -233,68 +218,107 @@ th{
 
 <body>
 
-<div class="container">
+<div class="wrap">
 
-<div class="header">
+<div class="head">
 
-<h1>🎯 SP 下一次预测器</h1>
+<h1>🎯 SP 拉长补短预测器</h1>
 
-<div class="subtitle">
-0.32% 基准 + SP 历史数据 + 当前抽数条件概率
+<div class="sub">
+官方中心 + 历史分布 + 当前状态 + 可验证的拉长补短关系
 </div>
 
 </div>
 
 
-<!-- 输入 -->
+<!-- =========================
+     输入区域
+========================= -->
 
 <div class="card">
 
-<label>当前抽数</label>
+<div class="grid">
+
+<div>
+
+<label>
+官方平均多少抽 1 个 SP？
+</label>
+
+<input
+    id="official"
+    type="number"
+    inputmode="decimal"
+    value="313"
+    min="1"
+    step="0.1"
+>
+
+<div class="muted">
+例如官方平均 313 抽，就填 313。
+</div>
+
+</div>
+
+
+<div>
+
+<label>
+当前已经抽多少？
+</label>
 
 <input
     id="current"
     type="number"
     inputmode="numeric"
-    value="42"
+    value="163"
     min="0"
+    step="1"
 >
 
-
-<label>SP 实际出现的历史抽数</label>
-
-<textarea
-    id="history"
-    placeholder="例如：
-
-27
-64
-172
-174
-199
-212
-242
-308
-521
-798
-1091
-1109
-1370
-2136
-2161
-2654
-"></textarea>
-
 <div class="muted">
+本轮尚未出 SP 时填写。
+</div>
 
-⚠️这里只输入真正的 SP 出现抽数。
-
-不要输入 B*、S*、言*、弃* 等其他结果。
+</div>
 
 </div>
 
 
-<div id="status" class="muted status">
+<label>
+历史每一轮 SP 实际出现抽数
+</label>
+
+<textarea
+id="history"
+placeholder="例如：
+25
+59
+120
+170
+199
+234
+279
+306
+381
+614"
+></textarea>
+
+<div class="muted">
+
+每个数字必须是：
+
+「从上一轮 SP 后重新开始，到下一次 SP 出现用了多少抽」。
+
+不要把累计总抽数直接放进来。
+
+</div>
+
+
+<div
+id="status"
+class="muted status"
+>
 准备分析
 </div>
 
@@ -305,44 +329,51 @@ th{
 
 
 <button
-    id="addSP"
-    class="secondary"
+id="add"
+class="secondary"
 >
-➕ 当前抽数记录为 SP
+➕ 当前抽数记录为 SP，并开始下一轮
 </button>
 
 
 <button
-    id="save"
-    class="secondary"
+id="save"
+class="secondary"
 >
-💾 保存数据
+💾 保存到本机
+</button>
+
+
+<button
+id="clear"
+class="secondary"
+>
+🗑️ 清除本机数据
 </button>
 
 </div>
 
 
-<!-- 结果 -->
-
-<div id="results">
-
+<!-- =========================
+     主预测
+========================= -->
 
 <div class="card hero">
 
 <div class="muted">
-当前抽数条件下的预测
+当前条件下最值得关注
 </div>
 
 <div
-    id="mainPrediction"
-    class="big"
+id="prediction"
+class="big"
 >
 —
 </div>
 
 <div
-    id="mainDetail"
-    class="muted"
+id="prediction2"
+class="muted"
 >
 —
 </div>
@@ -350,79 +381,139 @@ th{
 </div>
 
 
-<div class="card">
+<!-- =========================
+     核心统计
+========================= -->
 
-<label>📊 核心统计</label>
+<div class="card">
 
 <div
-    id="stats"
-    class="stats"
+class="stats"
+id="stats"
 >
 </div>
 
 </div>
 
 
+<!-- =========================
+     拉长补短
+========================= -->
+
 <div class="card">
 
-<label>🔥 最值得关注的区间</label>
+<label>
+🔄 拉长补短检测
+</label>
 
-<div id="topRanges">
+<div id="reversal">
 —
 </div>
 
 </div>
 
 
+<!-- =========================
+     条件概率
+========================= -->
+
 <div class="card">
 
-<label>📍 当前位置</label>
+<label>
+📈 当前条件概率
+</label>
 
-<div id="position">
+<div id="prob">
 —
 </div>
 
 </div>
 
 
+<!-- =========================
+     未来区间
+========================= -->
+
 <div class="card">
 
-<label>📈 条件概率</label>
+<label>
+🔥 未来区间
+</label>
 
-<div id="probability">
+<div id="ranges">
 —
 </div>
 
 </div>
 
 
+<!-- =========================
+     当前状态
+========================= -->
+
 <div class="card">
 
-<label>🧮 历史 SP 数据</label>
+<label>
+📍 当前状态
+</label>
 
-<div id="historyTable">
+<div id="state">
 —
 </div>
 
 </div>
 
 
+<!-- =========================
+     说明
+========================= -->
+
 <div class="card">
 
-<div class="warning">
+<div class="note">
 
-本程序使用历史数据建立条件统计模型。
+<b>重要说明：</b>
 
-0.32% 对应理论平均约 312.5 抽。
+<br><br>
 
-如果抽奖系统每次完全独立随机，历史数据不会改变下一次真实概率。
+官方平均值是长期中心，不是固定保底。
 
-因此这里显示的是“历史条件模型下的预测”，不是保证中奖。
+<br><br>
+
+程序会从相邻历史 SP 的：
+
+「上一轮偏离 → 下一轮偏离」
+
+计算是否真的存在反向关系。
+
+<br><br>
+
+如果样本不足或关系很弱，
+系统会自动降低拉长补短的权重。
+
+<br><br>
+
+这里输出的是统计模型，
+不是保证某一抽一定出 SP。
 
 </div>
 
 </div>
 
+
+<!-- =========================
+     历史
+========================= -->
+
+<div class="card">
+
+<label>
+🧮 最近历史
+</label>
+
+<div id="table">
+—
+</div>
 
 </div>
 
@@ -441,206 +532,666 @@ th{
    基础函数
 ========================= */
 
-function $(id){
-
-    return document.getElementById(id);
-
-}
+const $ =
+id =>
+document.getElementById(id);
 
 
-function getHistory(){
+const clamp =
+(x,a,b) =>
+Math.max(
+    a,
+    Math.min(b,x)
+);
+
+
+const fmt =
+x =>
+Number.isInteger(x)
+?
+String(x)
+:
+String(
+    Math.round(x*10)/10
+);
+
+
+/* =========================
+   读取历史数据
+========================= */
+
+function getData(){
 
     return $("history")
         .value
         .trim()
-        .split(/[\s,，]+/)
+        .split(
+            /[\s,，、;；]+/
+        )
         .map(Number)
-        .filter(function(x){
-
-            return Number.isFinite(x)
-                && x >= 0;
-
-        });
-
-}
-
-
-function average(arr){
-
-    if(!arr.length) return 0;
-
-    return arr.reduce(
-        function(a,b){
-            return a+b;
-        },
-        0
-    ) / arr.length;
-
-}
-
-
-function median(arr){
-
-    if(!arr.length) return 0;
-
-    var a=arr.slice().sort(
-        function(x,y){
-            return x-y;
-        }
-    );
-
-    var n=a.length;
-
-    if(n%2){
-
-        return a[(n-1)/2];
-
-    }
-
-    return (
-        a[n/2-1]+
-        a[n/2]
-    )/2;
-
-}
-
-
-function percentile(arr,p){
-
-    if(!arr.length) return 0;
-
-    var a=arr.slice().sort(
-        function(x,y){
-            return x-y;
-        }
-    );
-
-    var pos=(a.length-1)*p;
-
-    var low=Math.floor(pos);
-
-    var high=Math.ceil(pos);
-
-    return a[low]+
-        (a[high]-a[low])*
-        (pos-low);
-
-}
-
-
-function formatNumber(x){
-
-    if(
-        Number.isInteger(x)
-    ){
-
-        return String(x);
-
-    }
-
-    return String(
-        Math.round(x*10)/10
-    );
-
-}
-
-
-/* =========================
-   理论模型
-========================= */
-
-/*
-
-0.32%
-
-= 0.0032
-
-理论平均：
-
-1 / 0.0032
-≈ 312.5
-
-*/
-
-var BASE_RATE=0.0032;
-
-
-/*
-
-理论累计概率：
-
-P(T <= x)
-
-*/
-
-function priorCDF(x){
-
-    return 1-
-        Math.exp(
-            -BASE_RATE*x
+        .filter(
+            x =>
+            Number.isFinite(x)
+            &&
+            x>0
         );
 
 }
 
 
 /* =========================
-   历史经验模型
+   平均值
 ========================= */
 
-function blendedCDF(history,x){
+function mean(a){
 
-    if(!history.length){
+    if(!a.length)
+        return 0;
 
-        return priorCDF(x);
+    return a.reduce(
+        (s,x)=>s+x,
+        0
+    ) / a.length;
+
+}
+
+
+/* =========================
+   中位数
+========================= */
+
+function median(a){
+
+    if(!a.length)
+        return 0;
+
+    const b =
+        [...a].sort(
+            (x,y)=>x-y
+        );
+
+    const n =
+        b.length;
+
+    if(n%2){
+
+        return b[
+            (n-1)/2
+        ];
+
+    }
+
+    return (
+        b[n/2-1]
+        +
+        b[n/2]
+    )/2;
+
+}
+
+
+/* =========================
+   标准差
+========================= */
+
+function sd(a){
+
+    if(a.length<2)
+        return 0;
+
+    const m =
+        mean(a);
+
+    return Math.sqrt(
+
+        a.reduce(
+            (s,x)=>
+            s+
+            Math.pow(
+                x-m,
+                2
+            ),
+            0
+        )
+        /
+        (a.length-1)
+
+    );
+
+}
+
+
+/* =========================
+   拉长补短分析
+========================= */
+
+function reversalStats(
+    history,
+    official
+){
+
+    const deviations =
+        history.map(
+            x =>
+            x-official
+        );
+
+
+    /*
+    至少需要几次数据
+    才能分析相邻关系
+    */
+
+    if(
+        deviations.length<4
+    ){
+
+        return {
+
+            n:0,
+
+            corr:0,
+
+            slope:0,
+
+            confidence:0,
+
+            label:
+            "样本不足",
+
+            comp:0
+
+        };
 
     }
 
 
-    var n=history.length;
+    /*
+    X = 上一轮偏离
+
+    Y = 下一轮偏离
+    */
+
+    const x =
+        deviations.slice(
+            0,-1
+        );
+
+
+    const y =
+        deviations.slice(
+            1
+        );
+
+
+    const mx =
+        mean(x);
+
+
+    const my =
+        mean(y);
+
+
+    let numerator=0;
+
+    let dx=0;
+
+    let dy=0;
+
+
+    for(
+        let i=0;
+        i<x.length;
+        i++
+    ){
+
+        const a =
+            x[i]-mx;
+
+        const b =
+            y[i]-my;
+
+
+        numerator +=
+            a*b;
+
+
+        dx +=
+            a*a;
+
+
+        dy +=
+            b*b;
+
+    }
 
 
     /*
+    Pearson 相关系数
 
-    样本越多，
+    负数：
 
-    越相信真实历史。
-
-    样本少的时候保留
-    0.32% 理论基准。
-
+    长 → 短
+    短 → 长
     */
 
-    var weight=
-        n/(n+20);
-
-
-    var count=
-        history.filter(
-            function(v){
-
-                return v<=x;
-
-            }
-        ).length;
-
-
-    /* Laplace smoothing */
-
-    var empirical=
+    const corr =
         (
-            count+
-            priorCDF(x)
-        )/
-        (n+1);
+            dx &&
+            dy
+        )
+        ?
+        numerator /
+        Math.sqrt(
+            dx*dy
+        )
+        :
+        0;
 
 
-    var prior=
-        priorCDF(x);
+    /*
+    回归斜率
+
+    Y = slope * X + intercept
+    */
+
+    const slope =
+        dx
+        ?
+        numerator/dx
+        :
+        0;
+
+
+    /*
+    样本越多
+    越相信这个规律
+
+    50 次以后接近满权重
+    */
+
+    const sampleFactor =
+        clamp(
+            (
+                deviations.length-3
+            )/47,
+            0,
+            1
+        );
+
+
+    /*
+    相关性越负
+    拉长补短证据越强
+    */
+
+    const effect =
+        clamp(
+            (
+                -corr-0.05
+            )/0.65,
+            0,
+            1
+        );
+
+
+    const strength =
+        sampleFactor*
+        effect;
+
+
+    /*
+    补偿系数
+
+    限制最大 ±80%
+    防止模型过度修正
+    */
+
+    const comp =
+        clamp(
+            -slope,
+            -0.8,
+            0.8
+        );
+
+
+    let label =
+        "无明显关系";
+
+
+    if(
+        deviations.length<8
+    ){
+
+        label=
+            "样本不足";
+
+    }
+
+    else if(
+        corr<=-0.45
+        &&
+        strength>=0.45
+    ){
+
+        label=
+            "强";
+
+    }
+
+    else if(
+        corr<=-0.25
+        &&
+        strength>=0.22
+    ){
+
+        label=
+            "中";
+
+    }
+
+    else if(
+        corr<-0.10
+    ){
+
+        label=
+            "弱";
+
+    }
+
+
+    return {
+
+        n:
+        deviations.length,
+
+        corr,
+
+        slope,
+
+        confidence:
+        strength,
+
+        label,
+
+        comp
+
+    };
+
+}
+
+
+/* =========================
+   官方理论模型
+========================= */
+
+function baseSurvival(
+    history,
+    x,
+    official
+){
+
+    /*
+    官方平均抽数
+    作为指数分布中心
+    */
+
+    const officialSurvival =
+        Math.exp(
+            -Math.max(
+                0,
+                x
+            )
+            /
+            official
+        );
+
+
+    if(
+        history.length<3
+    ){
+
+        return officialSurvival;
+
+    }
+
+
+    /*
+    历史经验生存概率
+    */
+
+    let greater=0;
+
+
+    for(
+        const v of history
+    ){
+
+        if(v>x)
+            greater++;
+
+    }
+
+
+    const empirical =
+        (
+            greater+1
+        )
+        /
+        (
+            history.length+2
+        );
+
+
+    /*
+    历史数据权重
+
+    数据越多
+    历史权重越高
+    */
+
+    const weight =
+        history.length
+        /
+        (
+            history.length+20
+        );
 
 
     return (
-        weight*empirical+
-        (1-weight)*prior
+
+        (
+            1-weight
+        )
+        *
+        officialSurvival
+
+        +
+
+        weight*
+        empirical
+
+    );
+
+}
+
+
+/* =========================
+   拉长补短后的中心
+========================= */
+
+function adjustedCenter(
+    history,
+    current,
+    official,
+    reversal
+){
+
+    /*
+    没有足够证据
+    不调整
+    */
+
+    if(
+        reversal.n<4
+        ||
+        reversal.confidence<=0
+    ){
+
+        return official;
+
+    }
+
+
+    /*
+    当前偏离
+
+    例如：
+
+    当前 600
+    官方 313
+
+    偏离 +287
+    */
+
+    const currentDeviation =
+        current-official;
+
+
+    /*
+    拉长补短：
+
+    当前偏长
+    → 下一轮倾向偏短
+
+    当前偏短
+    → 下一轮倾向偏长
+    */
+
+    const predictedDeviation =
+        -reversal.comp*
+        currentDeviation;
+
+
+    /*
+    根据证据强度
+    决定实际调整多少
+    */
+
+    const shift =
+        predictedDeviation*
+        reversal.confidence;
+
+
+    /*
+    防止模型跑得太极端
+
+    中心最多：
+
+    25% ～ 250%
+    的官方平均
+    */
+
+    return clamp(
+
+        official+shift,
+
+        official*0.25,
+
+        official*2.5
+
+    );
+
+}
+
+
+/* =========================
+   生存概率
+========================= */
+
+function survival(
+    history,
+    x,
+    official,
+    center
+){
+
+    /*
+    调整后的理论中心
+    */
+
+    const theoretical =
+        Math.exp(
+            -Math.max(
+                0,
+                x
+            )
+            /
+            center
+        );
+
+
+    if(
+        history.length<3
+    ){
+
+        return theoretical;
+
+    }
+
+
+    /*
+    历史经验
+    */
+
+    let greater=0;
+
+
+    for(
+        const v of history
+    ){
+
+        if(v>x)
+            greater++;
+
+    }
+
+
+    const empirical =
+        (
+            greater+1
+        )
+        /
+        (
+            history.length+2
+        );
+
+
+    /*
+    官方/历史混合
+    */
+
+    const weight =
+        history.length
+        /
+        (
+            history.length+20
+        );
+
+
+    return (
+
+        (
+            1-weight
+        )
+        *
+        theoretical
+
+        +
+
+        weight*
+        empirical
+
     );
 
 }
@@ -648,524 +1199,154 @@ function blendedCDF(history,x){
 
 /* =========================
    条件概率
-
-   已经抽 current
-   还没有 SP
-
-   求未来 x 抽以内出 SP 的概率
-
 ========================= */
 
-function conditionalCDF(
+function conditionalProbability(
     history,
     current,
-    x
+    remaining,
+    official,
+    center
 ){
 
-    var before=
-        blendedCDF(
-            history,
-            current
+    /*
+    已经抽到 current
+    仍然没有 SP
+
+    求未来 remaining 抽
+    出 SP 的概率
+    */
+
+    const before =
+        Math.max(
+            0.000000000001,
+
+            survival(
+                history,
+                current,
+                official,
+                center
+            )
         );
 
 
-    var after=
-        blendedCDF(
+    const after =
+        survival(
             history,
-            current+x
+            current+remaining,
+            official,
+            center
         );
 
 
-    var survival=
-        1-before;
+    return clamp(
 
+        1-
+        after/before,
 
-    if(survival<=0){
-
-        survival=0.000001;
-
-    }
-
-
-    var result=
-        (after-before)/
-        survival;
-
-
-    return Math.max(
         0,
-        Math.min(1,result)
+
+        1
+
     );
 
 }
 
 
 /* =========================
-   分位数
-
+   50 / 80 / 90 分位
 ========================= */
 
-function conditionalQuantile(
+function quantile(
     history,
     current,
-    q
+    q,
+    official,
+    center
 ){
 
-    var low=0;
-
-    var high=5000;
+    let low=0;
 
 
-    while(low<high){
+    let high =
+        Math.max(
+            1000,
+            official*8,
+            center*8
+        );
 
-        var mid=
-            Math.floor(
-                (low+high)/2
-            );
+
+    /*
+    找到上界
+    */
+
+    while(
+
+        conditionalProbability(
+            history,
+            current,
+            high,
+            official,
+            center
+        )
+        <
+        q
+
+    ){
+
+        high*=2;
+
+    }
+
+
+    /*
+    二分搜索
+    */
+
+    for(
+        let i=0;
+        i<55;
+        i++
+    ){
+
+        const mid =
+            (low+high)/2;
 
 
         if(
-            conditionalCDF(
+
+            conditionalProbability(
                 history,
                 current,
-                mid
-            )>=q
+                mid,
+                official,
+                center
+            )
+            >=
+            q
+
         ){
 
             high=mid;
 
-        }else{
+        }
 
-            low=mid+1;
+        else{
+
+            low=mid;
 
         }
 
     }
 
 
-    return low;
+    return Math.ceil(high);
 
 }
 
 
 /* =========================
-   分析
-
-========================= */
-
-function analyze(){
-
-    var history=
-        getHistory();
-
-
-    var current=
-        Number(
-            $("current").value
-        );
-
-
-    if(
-        !Number.isFinite(current)
-        ||
-        current<0
-    ){
-
-        $("status").textContent=
-            "当前抽数无效";
-
-        return;
-
-    }
-
-
-    if(history.length<1){
-
-        $("status").textContent=
-            "请至少输入 1 个 SP 历史数据";
-
-        $("status").className=
-            "muted status warn";
-
-        return;
-
-    }
-
-
-    /* 排序 */
-
-    var sorted=
-        history.slice().sort(
-            function(a,b){
-                return a-b;
-            }
-        );
-
-
-    var avg=
-        average(sorted);
-
-
-    var med=
-        median(sorted);
-
-
-    var q10=
-        percentile(sorted,.10);
-
-
-    var q25=
-        percentile(sorted,.25);
-
-
-    var q75=
-        percentile(sorted,.75);
-
-
-    var q90=
-        percentile(sorted,.90);
-
-
-    /*
-
-    当前条件下：
-
-    50%
-    80%
-    90%
-
-    */
-
-    var q50=
-        conditionalQuantile(
-            sorted,
-            current,
-            .50
-        );
-
-
-    var q80=
-        conditionalQuantile(
-            sorted,
-            current,
-            .80
-        );
-
-
-    var q90next=
-        conditionalQuantile(
-            sorted,
-            current,
-            .90
-        );
-
-
-    $("mainPrediction").textContent=
-        "未来约 "+q50+" 抽";
-
-
-    $("mainDetail").textContent=
-        "50% 条件分位 · 80%："+q80+
-        " 抽 · 90%："+q90next+
-        " 抽";
-
-
-    /* 核心统计 */
-
-    $("stats").innerHTML=
-
-        stat(
-            "SP 历史次数",
-            sorted.length
-        )
-
-        +
-
-        stat(
-            "历史平均",
-            formatNumber(avg)+" 抽"
-        )
-
-        +
-
-        stat(
-            "历史中位数",
-            formatNumber(med)+" 抽"
-        )
-
-        +
-
-        stat(
-            "Q25",
-            formatNumber(q25)+" 抽"
-        )
-
-        +
-
-        stat(
-            "Q75",
-            formatNumber(q75)+" 抽"
-        )
-
-        +
-
-        stat(
-            "理论平均",
-            "312.5 抽"
-        );
-
-
-    /* =====================
-       当前排名
-    ===================== */
-
-    var lessOrEqual=
-        sorted.filter(
-            function(v){
-                return v<=current;
-            }
-        ).length;
-
-
-    var historicalPercent=
-        lessOrEqual/
-        sorted.length;
-
-
-    $("position").innerHTML=
-
-        "<b>"+
-        current+
-        " 抽</b><br>"+
-
-        "<span class='muted'>"+
-        "历史 SP 数据中约 "+
-        (historicalPercent*100)
-            .toFixed(1)+
-        "% 已经在这个抽数以内出现"+
-        "</span>"+
-
-        "<div class='bar'>"+
-        "<div class='bar-fill' style='width:"+
-        Math.min(
-            100,
-            historicalPercent*100
-        )+
-        "%'></div>"+
-        "</div>";
-
-
-    /* =====================
-       最值得关注的区间
-
-       每 20 抽计算一次
-
-    ===================== */
-
-    var ranges=[];
-
-
-    for(
-        var start=1;
-        start<=2000;
-        start+=20
-    ){
-
-        var end=
-            Math.min(
-                2000,
-                start+19
-            );
-
-
-        var p=
-            conditionalCDF(
-                sorted,
-                current,
-                end
-            )
-            -
-
-            conditionalCDF(
-                sorted,
-                current,
-                start-1
-            );
-
-
-        ranges.push({
-
-            start:start,
-
-            end:end,
-
-            probability:p
-
-        });
-
-    }
-
-
-    ranges.sort(
-        function(a,b){
-
-            return b.probability-
-                   a.probability;
-
-        }
-    );
-
-
-    var top=
-        ranges.slice(0,5);
-
-
-    $("topRanges").innerHTML=
-        top.map(
-            function(r){
-
-                return (
-
-                    "<div class='range'>"+
-
-                    "<div class='range-number'>"+
-                    "未来 "+
-                    r.start+
-                    " ～ "+
-                    r.end+
-                    " 抽"+
-                    "</div>"+
-
-                    "<div class='muted'>"+
-                    "模型区间概率约 "+
-                    (r.probability*100)
-                        .toFixed(2)+
-                    "%"+
-                    "</div>"+
-
-                    "</div>"
-
-                );
-
-            }
-        ).join("");
-
-
-    /* =====================
-       条件概率
-
-    ===================== */
-
-    var p50=
-        conditionalCDF(
-            sorted,
-            current,
-            50
-        );
-
-
-    var p100=
-        conditionalCDF(
-            sorted,
-            current,
-            100
-        );
-
-
-    var p200=
-        conditionalCDF(
-            sorted,
-            current,
-            200
-        );
-
-
-    var p500=
-        conditionalCDF(
-            sorted,
-            current,
-            500
-        );
-
-
-    $("probability").innerHTML=
-
-        stat(
-            "未来 50 抽内",
-            (p50*100).toFixed(2)+"%"
-        )
-
-        +
-
-        stat(
-            "未来 100 抽内",
-            (p100*100).toFixed(2)+"%"
-        )
-
-        +
-
-        stat(
-            "未来 200 抽内",
-            (p200*100).toFixed(2)+"%"
-        )
-
-        +
-
-        stat(
-            "未来 500 抽内",
-            (p500*100).toFixed(2)+"%"
-        );
-
-
-    /* =====================
-       历史表格
-
-    ===================== */
-
-    $("historyTable").innerHTML=
-
-        "<table>"+
-        "<tr>"+
-        "<th>#</th>"+
-        "<th>SP 抽数</th>"+
-        "</tr>"+
-
-        sorted.map(
-            function(v,i){
-
-                return (
-
-                    "<tr>"+
-                    "<td>"+
-                    (i+1)+
-                    "</td>"+
-                    "<td><b>"+
-                    v+
-                    "</b></td>"+
-                    "</tr>"
-
-                );
-
-            }
-        ).join("")+
-
-        "</table>";
-
-
-    $("status").textContent=
-        "✓ 分析完成";
-
-    $("status").className=
-        "muted status good";
-
-
-    saveLocal();
-
-}
-
-
-/* =========================
-   小组件
+   统计卡片
 ========================= */
 
 function stat(
@@ -1173,167 +1354,754 @@ function stat(
     value
 ){
 
-    return (
+    return `
 
-        "<div class='stat'>"+
+    <div class="stat">
 
-        "<div class='stat-title'>"+
-        title+
-        "</div>"+
+        <div class="st">
+            ${title}
+        </div>
 
-        "<div class='stat-value'>"+
-        value+
-        "</div>"+
+        <div class="sv">
+            ${value}
+        </div>
 
-        "</div>"
+    </div>
 
-    );
+    `;
 
 }
 
 
 /* =========================
-   新 SP
-
-   当前抽数直接加入历史
-
+   主分析
 ========================= */
 
-function addCurrentSP(){
+function analyze(){
 
-    var current=
+    const history =
+        getData();
+
+
+    const official =
+        Number(
+            $("official").value
+        );
+
+
+    const current =
         Number(
             $("current").value
         );
 
 
+    $("status").className=
+        "muted status";
+
+
+    /* 官方设定 */
+
     if(
-        !Number.isFinite(current)
+        !Number.isFinite(
+            official
+        )
         ||
-        current<0
+        official<=0
     ){
+
+        $("status").textContent=
+            "❌ 官方平均抽数无效";
+
+        $("status").className=
+            "muted status bad";
 
         return;
 
     }
 
 
-    var history=
-        getHistory();
+    /* 当前抽数 */
+
+    if(
+        !Number.isFinite(
+            current
+        )
+        ||
+        current<0
+    ){
+
+        $("status").textContent=
+            "❌ 当前抽数无效";
+
+        $("status").className=
+            "muted status bad";
+
+        return;
+
+    }
 
 
-    history.push(current);
+    /* 历史 */
+
+    if(!history.length){
+
+        $("status").textContent=
+            "❌ 至少输入 1 个真实 SP 历史数据";
+
+        $("status").className=
+            "muted status bad";
+
+        return;
+
+    }
 
 
-    history.sort(
-        function(a,b){
-            return a-b;
+    /*
+    排序只是用于
+    统计显示
+
+    拉长补短分析仍然使用
+    用户输入的时间顺序
+    */
+
+    const sorted =
+        [...history].sort(
+            (a,b)=>a-b
+        );
+
+
+    const average =
+        mean(sorted);
+
+
+    const med =
+        median(sorted);
+
+
+    const deviationSD =
+        sd(sorted);
+
+
+    /*
+    拉长补短
+    */
+
+    const reversal =
+        reversalStats(
+            history,
+            official
+        );
+
+
+    /*
+    当前情况下
+    调整后的中心
+    */
+
+    const center =
+        adjustedCenter(
+            history,
+            current,
+            official,
+            reversal
+        );
+
+
+    /*
+    预测
+    */
+
+    const q50 =
+        quantile(
+            history,
+            current,
+            0.50,
+            official,
+            center
+        );
+
+
+    const q80 =
+        quantile(
+            history,
+            current,
+            0.80,
+            official,
+            center
+        );
+
+
+    const q90 =
+        quantile(
+            history,
+            current,
+            0.90,
+            official,
+            center
+        );
+
+
+    $("prediction").textContent=
+        `未来约 ${q50} 抽`;
+
+
+    $("prediction2").textContent=
+
+        `50%分位 · `+
+
+        `80%：未来 ${q80} 抽 · `+
+
+        `90%：未来 ${q90} 抽 · `+
+
+        `调整中心约 ${fmt(center)} 抽`;
+
+
+    /* =====================
+       核心统计
+    ===================== */
+
+    $("stats").innerHTML=
+
+        stat(
+            "官方平均",
+            fmt(official)+" 抽"
+        )
+
+        +
+
+        stat(
+            "历史样本",
+            history.length+" 次"
+        )
+
+        +
+
+        stat(
+            "历史平均",
+            fmt(average)+" 抽"
+        )
+
+        +
+
+        stat(
+            "历史中位数",
+            fmt(med)+" 抽"
+        )
+
+        +
+
+        stat(
+            "历史波动 SD",
+            fmt(deviationSD)+" 抽"
+        )
+
+        +
+
+        stat(
+            "模型中心",
+            fmt(center)+" 抽"
+        );
+
+
+    /* =====================
+       拉长补短显示
+    ===================== */
+
+    const corrText =
+        reversal.n
+        ?
+        reversal.corr.toFixed(3)
+        :
+        "—";
+
+
+    const compText =
+        reversal.n
+        ?
+        (
+            reversal.comp*100
+        ).toFixed(1)+"%"
+        :
+        "—";
+
+
+    let direction =
+        "—";
+
+
+    if(
+        reversal.n
+    ){
+
+        if(
+            reversal.comp>0.05
+        ){
+
+            direction=
+                "有反向修正倾向";
+
         }
+
+        else if(
+            reversal.comp<-0.05
+        ){
+
+            direction=
+                "没有稳定的反向修正";
+
+        }
+
+        else{
+
+            direction=
+                "接近随机 / 不明显";
+
+        }
+
+    }
+
+
+    $("reversal").innerHTML=
+
+        `<b>
+        拉长补短强度：
+        ${reversal.label}
+        </b>
+
+        <br><br>
+
+        相邻偏离相关系数：
+
+        ${corrText}
+
+        <br>
+
+        估计反向补偿系数：
+
+        ${compText}
+
+        <br>
+
+        当前模型判断：
+
+        ${direction}
+
+        <br><br>
+
+        <span class="muted">
+
+        样本越多，
+        系统才会越相信这个关系。
+
+        样本少时会自动降低影响。
+
+        </span>`;
+
+
+    /* =====================
+       条件概率
+    ===================== */
+
+    const probabilityList=[
+
+        50,
+
+        100,
+
+        150,
+
+        200,
+
+        300
+
+    ].map(
+        x => [
+
+            x,
+
+            conditionalProbability(
+                history,
+                current,
+                x,
+                official,
+                center
+            )
+
+        ]
     );
 
 
-    $("history").value=
-        history.join("\n");
+    $("prob").innerHTML=
+
+        probabilityList
+        .map(
+            ([x,p]) =>
+
+            `未来 ${x} 抽内：
+
+            <b>
+            ${(p*100).toFixed(1)}%
+            </b>`
+
+        )
+        .join("<br>");
 
 
-    analyze();
+    /* =====================
+       区间图
+    ===================== */
+
+    $("ranges").innerHTML=
+
+        probabilityList
+        .map(
+            ([x,p]) => `
+
+            <div class="range">
+
+                <b>
+                未来 ${x} 抽内
+                </b>
+
+                ：
+
+                ${(p*100).toFixed(1)}%
+
+                <div class="bar">
+
+                    <div
+                    class="fill"
+                    style="
+                    width:
+                    ${(p*100).toFixed(1)}%
+                    "
+                    ></div>
+
+                </div>
+
+            </div>
+
+            `
+        )
+        .join("");
+
+
+    /* =====================
+       当前状态
+    ===================== */
+
+    const deviation =
+        current-official;
+
+
+    let state=
+        "正常";
+
+
+    if(
+        deviation
+        >
+        official*0.35
+    ){
+
+        state=
+            "明显偏长";
+
+    }
+
+    else if(
+        deviation
+        >
+        official*0.12
+    ){
+
+        state=
+            "偏长";
+
+    }
+
+    else if(
+        deviation
+        <
+        -official*0.35
+    ){
+
+        state=
+            "明显偏短";
+
+    }
+
+    else if(
+        deviation
+        <
+        -official*0.12
+    ){
+
+        state=
+            "偏短";
+
+    }
+
+
+    $("state").innerHTML=
+
+        `<b>
+        ${state}
+        </b>
+
+        <br><br>
+
+        当前偏离官方中心：
+
+        ${
+            deviation>=0
+            ?
+            "+"
+            :
+            ""
+        }
+
+        ${fmt(deviation)}
+        抽
+
+        <br>
+
+        当前抽数：
+
+        ${fmt(current)}
+
+        ｜
+
+        官方平均：
+
+        ${fmt(official)}
+
+        <br><br>
+
+        ${
+            reversal.n>=4
+            &&
+            reversal.comp>0.05
+            ?
+
+            "模型会根据历史反向关系，对下一轮中心做适度回补。"
+
+            :
+
+            "目前没有足够强的历史证据让拉长补短大幅改变预测。"
+
+        }`;
+
+
+    /* =====================
+       最近历史
+    ===================== */
+
+    const recent =
+        history
+        .slice(-15)
+        .reverse();
+
+
+    $("table").innerHTML=
+
+        `
+
+        <table>
+
+        <tr>
+
+        <th>
+        最近
+        </th>
+
+        <th>
+        SP出现抽数
+        </th>
+
+        <th>
+        相对官方
+        </th>
+
+        </tr>
+
+
+        ${
+
+        recent
+        .map(
+            (v,i)=>{
+
+                const d =
+                    v-official;
+
+
+                return `
+
+                <tr>
+
+                <td>
+                ${i+1}
+                </td>
+
+                <td>
+                ${fmt(v)} 抽
+                </td>
+
+                <td>
+
+                ${
+                    d>=0
+                    ?
+                    "+"
+                    :
+                    ""
+                }
+
+                ${fmt(d)}
+
+                </td>
+
+                </tr>
+
+                `;
+
+            }
+        )
+        .join("")
+
+        }
+
+        </table>
+
+        `;
+
+
+    /* =====================
+       完成
+    ===================== */
+
+    $("status").textContent=
+
+        `✓ 分析完成｜`+
+
+        `官方 ${fmt(official)} 抽｜`+
+
+        `历史 ${history.length} 次｜`+
+
+        `拉长补短：${reversal.label}`;
+
+
+    $("status").className=
+        "muted status good";
 
 }
 
 
 /* =========================
-   本地保存
-
+   当前抽数记录为 SP
 ========================= */
 
-function saveLocal(){
+$("add")
+.addEventListener(
+    "click",
+    ()=>{
 
-    try{
-
-        localStorage.setItem(
-            "sp_history",
-            $("history").value
-        );
-
-        localStorage.setItem(
-            "sp_current",
-            $("current").value
-        );
-
-    }catch(e){}
-
-}
-
-
-/* =========================
-   读取保存
-
-========================= */
-
-function loadLocal(){
-
-    try{
-
-        var history=
-            localStorage.getItem(
-                "sp_history"
+        const current =
+            Number(
+                $("current").value
             );
 
 
-        var current=
-            localStorage.getItem(
-                "sp_current"
-            );
+        if(
+            !Number.isFinite(
+                current
+            )
+            ||
+            current<=0
+        ){
 
+            $("status").textContent=
+                "❌ 当前抽数必须大于 0";
 
-        if(history!==null){
+            $("status").className=
+                "muted status bad";
 
-            $("history").value=
-                history;
+            return;
 
         }
 
 
-        if(current!==null){
+        const data =
+            getData();
 
-            $("current").value=
-                current;
 
-        }
+        data.push(
+            current
+        );
 
-    }catch(e){}
 
-}
+        $("history").value =
+            data.join(
+                "\n"
+            );
+
+
+        /*
+        SP 已经出了
+
+        下一轮重新从 0 开始
+        */
+
+        $("current").value=0;
+
+
+        analyze();
+
+    }
+);
 
 
 /* =========================
-   按钮
-
+   保存
 ========================= */
-
-$("analyze")
-.addEventListener(
-    "click",
-    analyze
-);
-
-
-$("addSP")
-.addEventListener(
-    "click",
-    addCurrentSP
-);
-
 
 $("save")
 .addEventListener(
     "click",
-    function(){
+    ()=>{
 
-        saveLocal();
+        const data={
+
+            official:
+                Number(
+                    $("official").value
+                ),
+
+            current:
+                Number(
+                    $("current").value
+                ),
+
+            history:
+                getData()
+
+        };
+
+
+        localStorage.setItem(
+
+            "sp_predictor_final",
+
+            JSON.stringify(
+                data
+            )
+
+        );
+
 
         $("status").textContent=
-            "✓ 已保存";
+            "✓ 已保存到这台手机的浏览器";
 
         $("status").className=
             "muted status good";
@@ -1343,17 +2111,116 @@ $("save")
 
 
 /* =========================
-   启动
-
+   清除
 ========================= */
 
-loadLocal();
+$("clear")
+.addEventListener(
+    "click",
+    ()=>{
 
-analyze();
+        if(
+            confirm(
+                "确定清除这台手机保存的数据吗？"
+            )
+        ){
+
+            localStorage.removeItem(
+                "sp_predictor_final"
+            );
+
+
+            $("history").value="";
+
+            $("current").value=0;
+
+
+            $("status").textContent=
+                "已清除";
+
+            $("status").className=
+                "muted status";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   自动读取保存数据
+========================= */
+
+try{
+
+    const saved =
+        JSON.parse(
+
+            localStorage.getItem(
+                "sp_predictor_final"
+            )
+            ||
+            "null"
+
+        );
+
+
+    if(saved){
+
+        if(
+            Number.isFinite(
+                saved.official
+            )
+        ){
+
+            $("official").value=
+                saved.official;
+
+        }
+
+
+        if(
+            Number.isFinite(
+                saved.current
+            )
+        ){
+
+            $("current").value=
+                saved.current;
+
+        }
+
+
+        if(
+            Array.isArray(
+                saved.history
+            )
+        ){
+
+            $("history").value=
+                saved.history.join(
+                    "\n"
+                );
+
+        }
+
+    }
+
+}catch(e){}
+
+
+/* =========================
+   开始分析按钮
+========================= */
+
+$("analyze")
+.addEventListener(
+    "click",
+    analyze
+);
 
 
 })();
-
 </script>
 
 </body>
