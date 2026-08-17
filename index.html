@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
+
+<meta name="theme-color" content="#07111f">
+
+<title>SP 下一次预测器</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    margin:0;
+    background:#07111f;
+    color:#eef4ff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        sans-serif;
+}
+
+.container{
+    max-width:720px;
+    margin:auto;
+    padding:18px 14px 45px;
+}
+
+.header{
+    padding:8px 2px 18px;
+}
+
+h1{
+    margin:0;
+    font-size:29px;
+}
+
+.subtitle{
+    color:#8fa2bc;
+    font-size:13px;
+    margin-top:6px;
+}
+
+.card{
+    background:#111d30;
+    border:1px solid #2a3b57;
+    border-radius:20px;
+    padding:17px;
+    margin:12px 0;
+}
+
+label{
+    display:block;
+    font-weight:800;
+    margin:12px 0 7px;
+}
+
+input,
+textarea{
+    width:100%;
+    background:#091423;
+    color:white;
+    border:1px solid #3b4f6d;
+    border-radius:14px;
+    padding:14px;
+    font-size:17px;
+    outline:none;
+}
+
+textarea{
+    min-height:145px;
+    resize:vertical;
+    line-height:1.5;
+}
+
+button{
+    width:100%;
+    min-height:54px;
+    margin-top:12px;
+    border:0;
+    border-radius:15px;
+    background:#38bdf8;
+    color:#052438;
+    font-size:17px;
+    font-weight:900;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.secondary{
+    background:#293b58;
+    color:white;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.hero{
+    background:
+        linear-gradient(135deg,#132b45,#101c30);
+    border-color:#31587f;
+}
+
+.big{
+    font-size:36px;
+    font-weight:950;
+    margin-top:5px;
+}
+
+.muted{
+    color:#91a3bc;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.status{
+    min-height:20px;
+    margin-top:10px;
+}
+
+.good{
+    color:#4ade80;
+}
+
+.warn{
+    color:#fbbf24;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.stat{
+    background:#091423;
+    border-radius:14px;
+    padding:13px;
+}
+
+.stat-title{
+    color:#8fa2bc;
+    font-size:12px;
+}
+
+.stat-value{
+    font-size:23px;
+    font-weight:900;
+    margin-top:3px;
+}
+
+.range{
+    background:#091423;
+    border-radius:15px;
+    padding:14px;
+    margin-top:9px;
+}
+
+.range-number{
+    font-size:22px;
+    font-weight:900;
+}
+
+.bar{
+    height:13px;
+    background:#293b58;
+    border-radius:99px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.bar-fill{
+    height:100%;
+    background:#38bdf8;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+th,
+td{
+    padding:9px 5px;
+    border-bottom:1px solid #293b58;
+    text-align:left;
+}
+
+th{
+    color:#8fa2bc;
+}
+
+.hidden{
+    display:none;
+}
+
+.warning{
+    background:#17263a;
+    padding:12px;
+    border-radius:13px;
+    color:#aebbd0;
+    font-size:12px;
+    line-height:1.5;
+}
+
+@media(max-width:430px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🎯 SP 下一次预测器</h1>
+
+<div class="subtitle">
+0.32% 基准 + SP 历史数据 + 当前抽数条件概率
+</div>
+
+</div>
+
+
+<!-- 输入 -->
+
+<div class="card">
+
+<label>当前抽数</label>
+
+<input
+    id="current"
+    type="number"
+    inputmode="numeric"
+    value="42"
+    min="0"
+>
+
+
+<label>SP 实际出现的历史抽数</label>
+
+<textarea
+    id="history"
+    placeholder="例如：
+
+27
+64
+172
+174
+199
+212
+242
+308
+521
+798
+1091
+1109
+1370
+2136
+2161
+2654
+"></textarea>
+
+<div class="muted">
+
+⚠️这里只输入真正的 SP 出现抽数。
+
+不要输入 B*、S*、言*、弃* 等其他结果。
+
+</div>
+
+
+<div id="status" class="muted status">
+准备分析
+</div>
+
+
+<button id="analyze">
+🚀 开始分析
+</button>
+
+
+<button
+    id="addSP"
+    class="secondary"
+>
+➕ 当前抽数记录为 SP
+</button>
+
+
+<button
+    id="save"
+    class="secondary"
+>
+💾 保存数据
+</button>
+
+</div>
+
+
+<!-- 结果 -->
+
+<div id="results">
+
+
+<div class="card hero">
+
+<div class="muted">
+当前抽数条件下的预测
+</div>
+
+<div
+    id="mainPrediction"
+    class="big"
+>
+—
+</div>
+
+<div
+    id="mainDetail"
+    class="muted"
+>
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<label>📊 核心统计</label>
+
+<div
+    id="stats"
+    class="stats"
+>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<label>🔥 最值得关注的区间</label>
+
+<div id="topRanges">
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<label>📍 当前位置</label>
+
+<div id="position">
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<label>📈 条件概率</label>
+
+<div id="probability">
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<label>🧮 历史 SP 数据</label>
+
+<div id="historyTable">
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="warning">
+
+本程序使用历史数据建立条件统计模型。
+
+0.32% 对应理论平均约 312.5 抽。
+
+如果抽奖系统每次完全独立随机，历史数据不会改变下一次真实概率。
+
+因此这里显示的是“历史条件模型下的预测”，不是保证中奖。
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* =========================
+   基础函数
+========================= */
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function getHistory(){
+
+    return $("history")
+        .value
+        .trim()
+        .split(/[\s,，]+/)
+        .map(Number)
+        .filter(function(x){
+
+            return Number.isFinite(x)
+                && x >= 0;
+
+        });
+
+}
+
+
+function average(arr){
+
+    if(!arr.length) return 0;
+
+    return arr.reduce(
+        function(a,b){
+            return a+b;
+        },
+        0
+    ) / arr.length;
+
+}
+
+
+function median(arr){
+
+    if(!arr.length) return 0;
+
+    var a=arr.slice().sort(
+        function(x,y){
+            return x-y;
+        }
+    );
+
+    var n=a.length;
+
+    if(n%2){
+
+        return a[(n-1)/2];
+
+    }
+
+    return (
+        a[n/2-1]+
+        a[n/2]
+    )/2;
+
+}
+
+
+function percentile(arr,p){
+
+    if(!arr.length) return 0;
+
+    var a=arr.slice().sort(
+        function(x,y){
+            return x-y;
+        }
+    );
+
+    var pos=(a.length-1)*p;
+
+    var low=Math.floor(pos);
+
+    var high=Math.ceil(pos);
+
+    return a[low]+
+        (a[high]-a[low])*
+        (pos-low);
+
+}
+
+
+function formatNumber(x){
+
+    if(
+        Number.isInteger(x)
+    ){
+
+        return String(x);
+
+    }
+
+    return String(
+        Math.round(x*10)/10
+    );
+
+}
+
+
+/* =========================
+   理论模型
+========================= */
+
+/*
+
+0.32%
+
+= 0.0032
+
+理论平均：
+
+1 / 0.0032
+≈ 312.5
+
+*/
+
+var BASE_RATE=0.0032;
+
+
+/*
+
+理论累计概率：
+
+P(T <= x)
+
+*/
+
+function priorCDF(x){
+
+    return 1-
+        Math.exp(
+            -BASE_RATE*x
+        );
+
+}
+
+
+/* =========================
+   历史经验模型
+========================= */
+
+function blendedCDF(history,x){
+
+    if(!history.length){
+
+        return priorCDF(x);
+
+    }
+
+
+    var n=history.length;
+
+
+    /*
+
+    样本越多，
+
+    越相信真实历史。
+
+    样本少的时候保留
+    0.32% 理论基准。
+
+    */
+
+    var weight=
+        n/(n+20);
+
+
+    var count=
+        history.filter(
+            function(v){
+
+                return v<=x;
+
+            }
+        ).length;
+
+
+    /* Laplace smoothing */
+
+    var empirical=
+        (
+            count+
+            priorCDF(x)
+        )/
+        (n+1);
+
+
+    var prior=
+        priorCDF(x);
+
+
+    return (
+        weight*empirical+
+        (1-weight)*prior
+    );
+
+}
+
+
+/* =========================
+   条件概率
+
+   已经抽 current
+   还没有 SP
+
+   求未来 x 抽以内出 SP 的概率
+
+========================= */
+
+function conditionalCDF(
+    history,
+    current,
+    x
+){
+
+    var before=
+        blendedCDF(
+            history,
+            current
+        );
+
+
+    var after=
+        blendedCDF(
+            history,
+            current+x
+        );
+
+
+    var survival=
+        1-before;
+
+
+    if(survival<=0){
+
+        survival=0.000001;
+
+    }
+
+
+    var result=
+        (after-before)/
+        survival;
+
+
+    return Math.max(
+        0,
+        Math.min(1,result)
+    );
+
+}
+
+
+/* =========================
+   分位数
+
+========================= */
+
+function conditionalQuantile(
+    history,
+    current,
+    q
+){
+
+    var low=0;
+
+    var high=5000;
+
+
+    while(low<high){
+
+        var mid=
+            Math.floor(
+                (low+high)/2
+            );
+
+
+        if(
+            conditionalCDF(
+                history,
+                current,
+                mid
+            )>=q
+        ){
+
+            high=mid;
+
+        }else{
+
+            low=mid+1;
+
+        }
+
+    }
+
+
+    return low;
+
+}
+
+
+/* =========================
+   分析
+
+========================= */
+
+function analyze(){
+
+    var history=
+        getHistory();
+
+
+    var current=
+        Number(
+            $("current").value
+        );
+
+
+    if(
+        !Number.isFinite(current)
+        ||
+        current<0
+    ){
+
+        $("status").textContent=
+            "当前抽数无效";
+
+        return;
+
+    }
+
+
+    if(history.length<1){
+
+        $("status").textContent=
+            "请至少输入 1 个 SP 历史数据";
+
+        $("status").className=
+            "muted status warn";
+
+        return;
+
+    }
+
+
+    /* 排序 */
+
+    var sorted=
+        history.slice().sort(
+            function(a,b){
+                return a-b;
+            }
+        );
+
+
+    var avg=
+        average(sorted);
+
+
+    var med=
+        median(sorted);
+
+
+    var q10=
+        percentile(sorted,.10);
+
+
+    var q25=
+        percentile(sorted,.25);
+
+
+    var q75=
+        percentile(sorted,.75);
+
+
+    var q90=
+        percentile(sorted,.90);
+
+
+    /*
+
+    当前条件下：
+
+    50%
+    80%
+    90%
+
+    */
+
+    var q50=
+        conditionalQuantile(
+            sorted,
+            current,
+            .50
+        );
+
+
+    var q80=
+        conditionalQuantile(
+            sorted,
+            current,
+            .80
+        );
+
+
+    var q90next=
+        conditionalQuantile(
+            sorted,
+            current,
+            .90
+        );
+
+
+    $("mainPrediction").textContent=
+        "未来约 "+q50+" 抽";
+
+
+    $("mainDetail").textContent=
+        "50% 条件分位 · 80%："+q80+
+        " 抽 · 90%："+q90next+
+        " 抽";
+
+
+    /* 核心统计 */
+
+    $("stats").innerHTML=
+
+        stat(
+            "SP 历史次数",
+            sorted.length
+        )
+
+        +
+
+        stat(
+            "历史平均",
+            formatNumber(avg)+" 抽"
+        )
+
+        +
+
+        stat(
+            "历史中位数",
+            formatNumber(med)+" 抽"
+        )
+
+        +
+
+        stat(
+            "Q25",
+            formatNumber(q25)+" 抽"
+        )
+
+        +
+
+        stat(
+            "Q75",
+            formatNumber(q75)+" 抽"
+        )
+
+        +
+
+        stat(
+            "理论平均",
+            "312.5 抽"
+        );
+
+
+    /* =====================
+       当前排名
+    ===================== */
+
+    var lessOrEqual=
+        sorted.filter(
+            function(v){
+                return v<=current;
+            }
+        ).length;
+
+
+    var historicalPercent=
+        lessOrEqual/
+        sorted.length;
+
+
+    $("position").innerHTML=
+
+        "<b>"+
+        current+
+        " 抽</b><br>"+
+
+        "<span class='muted'>"+
+        "历史 SP 数据中约 "+
+        (historicalPercent*100)
+            .toFixed(1)+
+        "% 已经在这个抽数以内出现"+
+        "</span>"+
+
+        "<div class='bar'>"+
+        "<div class='bar-fill' style='width:"+
+        Math.min(
+            100,
+            historicalPercent*100
+        )+
+        "%'></div>"+
+        "</div>";
+
+
+    /* =====================
+       最值得关注的区间
+
+       每 20 抽计算一次
+
+    ===================== */
+
+    var ranges=[];
+
+
+    for(
+        var start=1;
+        start<=2000;
+        start+=20
+    ){
+
+        var end=
+            Math.min(
+                2000,
+                start+19
+            );
+
+
+        var p=
+            conditionalCDF(
+                sorted,
+                current,
+                end
+            )
+            -
+
+            conditionalCDF(
+                sorted,
+                current,
+                start-1
+            );
+
+
+        ranges.push({
+
+            start:start,
+
+            end:end,
+
+            probability:p
+
+        });
+
+    }
+
+
+    ranges.sort(
+        function(a,b){
+
+            return b.probability-
+                   a.probability;
+
+        }
+    );
+
+
+    var top=
+        ranges.slice(0,5);
+
+
+    $("topRanges").innerHTML=
+        top.map(
+            function(r){
+
+                return (
+
+                    "<div class='range'>"+
+
+                    "<div class='range-number'>"+
+                    "未来 "+
+                    r.start+
+                    " ～ "+
+                    r.end+
+                    " 抽"+
+                    "</div>"+
+
+                    "<div class='muted'>"+
+                    "模型区间概率约 "+
+                    (r.probability*100)
+                        .toFixed(2)+
+                    "%"+
+                    "</div>"+
+
+                    "</div>"
+
+                );
+
+            }
+        ).join("");
+
+
+    /* =====================
+       条件概率
+
+    ===================== */
+
+    var p50=
+        conditionalCDF(
+            sorted,
+            current,
+            50
+        );
+
+
+    var p100=
+        conditionalCDF(
+            sorted,
+            current,
+            100
+        );
+
+
+    var p200=
+        conditionalCDF(
+            sorted,
+            current,
+            200
+        );
+
+
+    var p500=
+        conditionalCDF(
+            sorted,
+            current,
+            500
+        );
+
+
+    $("probability").innerHTML=
+
+        stat(
+            "未来 50 抽内",
+            (p50*100).toFixed(2)+"%"
+        )
+
+        +
+
+        stat(
+            "未来 100 抽内",
+            (p100*100).toFixed(2)+"%"
+        )
+
+        +
+
+        stat(
+            "未来 200 抽内",
+            (p200*100).toFixed(2)+"%"
+        )
+
+        +
+
+        stat(
+            "未来 500 抽内",
+            (p500*100).toFixed(2)+"%"
+        );
+
+
+    /* =====================
+       历史表格
+
+    ===================== */
+
+    $("historyTable").innerHTML=
+
+        "<table>"+
+        "<tr>"+
+        "<th>#</th>"+
+        "<th>SP 抽数</th>"+
+        "</tr>"+
+
+        sorted.map(
+            function(v,i){
+
+                return (
+
+                    "<tr>"+
+                    "<td>"+
+                    (i+1)+
+                    "</td>"+
+                    "<td><b>"+
+                    v+
+                    "</b></td>"+
+                    "</tr>"
+
+                );
+
+            }
+        ).join("")+
+
+        "</table>";
+
+
+    $("status").textContent=
+        "✓ 分析完成";
+
+    $("status").className=
+        "muted status good";
+
+
+    saveLocal();
+
+}
+
+
+/* =========================
+   小组件
+========================= */
+
+function stat(
+    title,
+    value
+){
+
+    return (
+
+        "<div class='stat'>"+
+
+        "<div class='stat-title'>"+
+        title+
+        "</div>"+
+
+        "<div class='stat-value'>"+
+        value+
+        "</div>"+
+
+        "</div>"
+
+    );
+
+}
+
+
+/* =========================
+   新 SP
+
+   当前抽数直接加入历史
+
+========================= */
+
+function addCurrentSP(){
+
+    var current=
+        Number(
+            $("current").value
+        );
+
+
+    if(
+        !Number.isFinite(current)
+        ||
+        current<0
+    ){
+
+        return;
+
+    }
+
+
+    var history=
+        getHistory();
+
+
+    history.push(current);
+
+
+    history.sort(
+        function(a,b){
+            return a-b;
+        }
+    );
+
+
+    $("history").value=
+        history.join("\n");
+
+
+    analyze();
+
+}
+
+
+/* =========================
+   本地保存
+
+========================= */
+
+function saveLocal(){
+
+    try{
+
+        localStorage.setItem(
+            "sp_history",
+            $("history").value
+        );
+
+        localStorage.setItem(
+            "sp_current",
+            $("current").value
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================
+   读取保存
+
+========================= */
+
+function loadLocal(){
+
+    try{
+
+        var history=
+            localStorage.getItem(
+                "sp_history"
+            );
+
+
+        var current=
+            localStorage.getItem(
+                "sp_current"
+            );
+
+
+        if(history!==null){
+
+            $("history").value=
+                history;
+
+        }
+
+
+        if(current!==null){
+
+            $("current").value=
+                current;
+
+        }
+
+    }catch(e){}
+
+}
+
+
+/* =========================
+   按钮
+
+========================= */
+
+$("analyze")
+.addEventListener(
+    "click",
+    analyze
+);
+
+
+$("addSP")
+.addEventListener(
+    "click",
+    addCurrentSP
+);
+
+
+$("save")
+.addEventListener(
+    "click",
+    function(){
+
+        saveLocal();
+
+        $("status").textContent=
+            "✓ 已保存";
+
+        $("status").className=
+            "muted status good";
+
+    }
+);
+
+
+/* =========================
+   启动
+
+========================= */
+
+loadLocal();
+
+analyze();
+
+
+})();
+
+</script>
+
+</body>
+</html>
